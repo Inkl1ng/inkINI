@@ -17,8 +17,8 @@
 #   define INKINI_MAX_VALUES 32
 #endif
 
-#ifndef INKINI_MAX_VALUE_LENGTH
-#   define INKINI_MAX_VALUE_LENGTH 32
+#ifndef INKINI_MAX_ENTRY_LENGTH
+#   define INKINI_MAX_ENTRY_LENGTH 32
 #endif
 
 #ifndef INKINI_MAX_SECTIONS
@@ -26,8 +26,8 @@
 #endif
 
 struct value {
-    char key[INKINI_MAX_VALUE_LENGTH];
-    char value[INKINI_MAX_VALUE_LENGTH];
+    char key[INKINI_MAX_ENTRY_LENGTH];
+    char value[INKINI_MAX_ENTRY_LENGTH];
     int  seciton;
 };
 
