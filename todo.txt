@@ -1,0 +1,3 @@
+- reading entries from the file
+- writing entries to the file
+- saving changes to file
