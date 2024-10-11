@@ -25,7 +25,7 @@
 #   define INKINI_MAX_SECTIONS 8
 #endif
 
-struct value {
+struct entry {
     char key[INKINI_MAX_ENTRY_LENGTH];
     char value[INKINI_MAX_ENTRY_LENGTH];
     int  seciton;
@@ -33,7 +33,7 @@ struct value {
 
 struct inkINI_file {
     FILE*         file;
-    struct value* entries;
+    struct entry* entries;
 };
 
 typedef struct inkINI_file inkINI_file;

@@ -25,7 +25,7 @@ inkINI_file inkINI_load_file(char* filename)
     file = fopen(filename, "r+");
     inkINI_file ini_file;
     ini_file.file = file;
-    ini_file.entries = malloc(sizeof(struct value) * INKINI_MAX_VALUES);
+    ini_file.entries = malloc(sizeof(struct entry) * INKINI_MAX_VALUES);
 
     // read al the values in the file
     char line[INKINI_MAX_LINE_LENGTH + 1];
