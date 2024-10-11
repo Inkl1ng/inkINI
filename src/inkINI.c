@@ -36,15 +36,15 @@ inkINI_file inkINI_load_file(char* filename)
             continue;
         }
 
-        int equal_sign_index = 0;
+        size_t equal_sign_index = 0;
         while (line[equal_sign_index] != '=') {
             // printf("%c", line[equal_sign_index]);
             ++equal_sign_index;
         }
 
         // get the key for an entry
-        int i = 0;
-        int j = 0;
+        size_t i = 0;
+        size_t j = 0;
         while (i < equal_sign_index) {
             if (line[i] != ' ') {
                 ini_file.entries[num_values].key[j] = line[i];
@@ -76,8 +76,8 @@ inkINI_file inkINI_load_file(char* filename)
     }
 
     printf("num_values: %i\n", num_values);
-    for (int i = 0; i < num_values; ++i) {
-        printf("index: %i\tkey: %s\tvalue: %s\n",
+    for (size_t i = 0; i < num_values; ++i) {
+        printf("index: %zu\tkey: %s\tvalue: %s\n",
                i,
                ini_file.entries[i].key,
                ini_file.entries[i].value);
@@ -92,3 +92,36 @@ void inkINI_close_file(inkINI_file file)
     free(file.entries);
     file.entries = NULL;
 }
+
+int inkINI_read_i(inkINI_file file, char* key)
+{
+    char* value;
+    size_t i = 0;
+    while (strcmp(file.entries[i].key, key) != 0) {
+        ++i;
+    }
+
+    value = file.entries[i].value;
+    
+
+    int result = 0;
+    int sign = 0;
+
+    if (value[0] == '-') {
+        sign = -1;
+    } else {
+        sign = 1;
+    }
+
+    for (size_t i = 0; i < strlen(value); ++i) {
+        char c = value[i];
+
+        if (c >= '0' && c <= '9') {
+            result *= 10;
+            result += c - '0';
+        }
+    }
+
+    return result * sign;
+}
+
