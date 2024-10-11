@@ -1,2 +1,2 @@
 # inkINI
-A C++ .ini file reading and writing library
+A C .ini file reading and writing library
