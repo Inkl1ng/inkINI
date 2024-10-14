@@ -51,11 +51,14 @@ inkINI_file inkINI_load_file(char* filename);
  */
 void inkINI_close_file(inkINI_file file);
 
-/**
- * Reads an integer value from a file with a given key.
- *
- * Assumes that the value being read exists and is an integer value.
- */
-int inkINI_read_i(inkINI_file file, char* key);
+/*
+    All reading functions assume the following.
+        1. The key exists.
+        2. The value that corresponds to the key is the right data type
+*/
+
+int     inkINI_read_i(inkINI_file file, char* key);
+double  inkINI_read_d(inkINI_file file, char* key);
+char*   inkINI_read_s(inkINI_file file, char* key);
 
 #endif

@@ -5,6 +5,15 @@
 #include <stdbool.h>
 #include <string.h>
 
+void get_value(inkINI_file file, char* key, char** value)
+{
+    size_t i = 0;
+    while (strcmp(file.entries[i].key, key) != 0) {
+        ++i;
+    }
+    *value = file.entries[i].value;
+}
+
 /*** INCLUDED FROM inkINI.h ***/
 
 inkINI_file inkINI_load_file(char* filename)
@@ -52,7 +61,7 @@ inkINI_file inkINI_load_file(char* filename)
             }
             ++i;
         }
-        ini_file.entries[num_values].key[j + 1] = '\0';
+        ini_file.entries[num_values].key[j] = '\0';
 
         // get the value for an entry
         i = equal_sign_index + 1;
@@ -70,17 +79,9 @@ inkINI_file inkINI_load_file(char* filename)
             ++i;
         }
 
-        ini_file.entries[num_values].value[j + 1] = '\0';
+        ini_file.entries[num_values].value[j] = '\0';
 
         ++num_values;
-    }
-
-    printf("num_values: %i\n", num_values);
-    for (size_t i = 0; i < num_values; ++i) {
-        printf("index: %zu\tkey: %s\tvalue: %s\n",
-               i,
-               ini_file.entries[i].key,
-               ini_file.entries[i].value);
     }
 
     return ini_file;
@@ -96,32 +97,20 @@ void inkINI_close_file(inkINI_file file)
 int inkINI_read_i(inkINI_file file, char* key)
 {
     char* value;
-    size_t i = 0;
-    while (strcmp(file.entries[i].key, key) != 0) {
-        ++i;
-    }
-
-    value = file.entries[i].value;
-    
-
-    int result = 0;
-    int sign = 0;
-
-    if (value[0] == '-') {
-        sign = -1;
-    } else {
-        sign = 1;
-    }
-
-    for (size_t i = 0; i < strlen(value); ++i) {
-        char c = value[i];
-
-        if (c >= '0' && c <= '9') {
-            result *= 10;
-            result += c - '0';
-        }
-    }
-
-    return result * sign;
+    get_value(file, key, &value);
+    return atoi(value);
 }
 
+double inkINI_read_d(inkINI_file file, char* key)
+{
+    char* value;
+    get_value(file, key, &value);
+    return atof(value);
+}
+
+char* inkINI_read_s(inkINI_file file, char* key)
+{
+    char* value;
+    get_value(file, key, &value);
+    return value;
+}
