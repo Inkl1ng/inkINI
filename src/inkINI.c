@@ -35,10 +35,10 @@ inkINI_file inkINI_load_file(char* filename)
     inkINI_file ini_file;
     ini_file.file = file;
     ini_file.entries = malloc(sizeof(struct entry) * INKINI_MAX_VALUES);
+    ini_file.num_entires = 0;
 
     // read al the values in the file
     char line[INKINI_MAX_LINE_LENGTH + 1];
-    int num_values = 0;
     while (fgets(line, INKINI_MAX_LINE_LENGTH + 1, ini_file.file) != NULL) {
         // ignore empty lines and comments
         if (line[0] == INKINI_COMMENT || strlen(line) == 1) {
@@ -56,12 +56,12 @@ inkINI_file inkINI_load_file(char* filename)
         size_t j = 0;
         while (i < equal_sign_index) {
             if (line[i] != ' ') {
-                ini_file.entries[num_values].key[j] = line[i];
+                ini_file.entries[ini_file.num_entires].key[j] = line[i];
                 ++j;
             }
             ++i;
         }
-        ini_file.entries[num_values].key[j] = '\0';
+        ini_file.entries[ini_file.num_entires].key[j] = '\0';
 
         // get the value for an entry
         i = equal_sign_index + 1;
@@ -73,15 +73,15 @@ inkINI_file inkINI_load_file(char* filename)
             }
 
             if (line[i] != ' ' || in_quotes) {
-                ini_file.entries[num_values].value[j] = line[i];
+                ini_file.entries[ini_file.num_entires].value[j] = line[i];
                 ++j;
             }
             ++i;
         }
 
-        ini_file.entries[num_values].value[j] = '\0';
+        ini_file.entries[ini_file.num_entires].value[j] = '\0';
 
-        ++num_values;
+        ++ini_file.num_entires;
     }
 
     return ini_file;
@@ -113,4 +113,15 @@ char* inkINI_read_s(inkINI_file file, char* key)
     char* value;
     get_value(file, key, &value);
     return value;
+}
+
+void inkINI_print_all(inkINI_file file)
+{
+    printf("num_values: %i\n", file.num_entires);
+    for (size_t i = 0; i < file.num_entires; ++i) {
+        printf("index: %zu\tkey: %s\tvalue: %s\n",
+               i,
+               file.entries[i].key,
+               file.entries[i].value);
+    }
 }

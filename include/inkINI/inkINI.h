@@ -32,8 +32,9 @@ struct entry {
 };
 
 struct inkINI_file {
-    FILE*         file;
-    struct entry* entries;
+    FILE*           file;
+    struct entry*   entries;
+    int             num_entires;
 };
 
 typedef struct inkINI_file inkINI_file;
@@ -60,5 +61,10 @@ void inkINI_close_file(inkINI_file file);
 int     inkINI_read_i(inkINI_file file, char* key);
 double  inkINI_read_d(inkINI_file file, char* key);
 char*   inkINI_read_s(inkINI_file file, char* key);
+
+/**
+ * Prints out all the key-value pairs of a .ini file.
+ */
+void    inkINI_print_all(inkINI_file file);
 
 #endif

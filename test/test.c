@@ -1,20 +1,9 @@
 #include "inkINI/inkINI.h"
 
-void print_all_values(inkINI_file file, int num_entries)
-{
-    printf("num_values: %i\n", num_entries);
-    for (size_t i = 0; i < num_entries; ++i) {
-        printf("index: %zu\tkey: %s\tvalue: %s\n",
-               i,
-               file.entries[i].key,
-               file.entries[i].value);
-    }
-}
-
 int main(int argc, char** argv)
 {
     inkINI_file ini_file = inkINI_load_file(INI_FILES "a.ini");
-    print_all_values(ini_file, 5);
+    inkINI_print_all(ini_file);
 
     putchar('\n');
 
