@@ -13,8 +13,8 @@
 #   define INKINI_MAX_LINE_LENGTH 80
 #endif
 
-#ifndef INKINI_MAX_VALUES
-#   define INKINI_MAX_VALUES 32
+#ifndef INKINI_MAX_ENTRIES
+#   define INKINI_MAX_ENTRIES 32
 #endif
 
 #ifndef INKINI_MAX_ENTRY_LENGTH
@@ -48,7 +48,7 @@ typedef struct inkINI_file inkINI_file;
 inkINI_file inkINI_load_file(char* filename);
 
 /**
- * Closes a .ini file.
+ * Saves changes to a file and closes it.
  */
 void inkINI_close_file(inkINI_file file);
 
@@ -61,6 +61,10 @@ void inkINI_close_file(inkINI_file file);
 int     inkINI_read_i(inkINI_file file, char* key);
 double  inkINI_read_d(inkINI_file file, char* key);
 char*   inkINI_read_s(inkINI_file file, char* key);
+
+void    inkINI_write_i(inkINI_file file, char* key, int value);
+void    inkINI_write_d(inkINI_file file, char* key, double value);
+void    inkINI_write_s(inkINI_file file, char* key, char* value);
 
 /**
  * Prints out all the key-value pairs of a .ini file.

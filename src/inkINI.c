@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+// assumes that the value exists
 void get_value(inkINI_file file, char* key, char** value)
 {
     size_t i = 0;
@@ -12,6 +13,26 @@ void get_value(inkINI_file file, char* key, char** value)
         ++i;
     }
     *value = file.entries[i].value;
+}
+
+struct entry* get_entry(inkINI_file file, char* key)
+{
+    struct entry* entry = NULL;
+    // check if value exists
+    for (size_t i = 0; i < INKINI_MAX_ENTRIES; ++i) {
+        if (strcmp(file.entries[i].key, key) == 0) {
+            entry = &file.entries[i];
+        }
+    }
+
+    // entry not found, create new entry
+    if (entry == NULL) {
+        entry = &file.entries[file.num_entires];
+        ++file.num_entires;
+        strcpy(entry->key, key);
+    }
+
+    return entry;
 }
 
 /*** INCLUDED FROM inkINI.h ***/
@@ -34,7 +55,7 @@ inkINI_file inkINI_load_file(char* filename)
     file = fopen(filename, "r+");
     inkINI_file ini_file;
     ini_file.file = file;
-    ini_file.entries = malloc(sizeof(struct entry) * INKINI_MAX_VALUES);
+    ini_file.entries = malloc(sizeof(struct entry) * INKINI_MAX_ENTRIES);
     ini_file.num_entires = 0;
 
     // read al the values in the file
@@ -113,6 +134,24 @@ char* inkINI_read_s(inkINI_file file, char* key)
     char* value;
     get_value(file, key, &value);
     return value;
+}
+
+void inkINI_write_i(inkINI_file file, char* key, int value)
+{
+    struct entry* entry = get_entry(file, key);
+    sprintf(entry->value, "%i", value);
+}
+
+void inkINI_write_d(inkINI_file file, char* key, double value)
+{
+    struct entry* entry = get_entry(file, key);
+    sprintf(entry->value, "%f", value);
+}
+
+void inkINI_write_s(inkINI_file file, char* key, char* value)
+{
+    struct entry* entry = get_entry(file, key);
+    strcpy(entry->value, value);
 }
 
 void inkINI_print_all(inkINI_file file)
