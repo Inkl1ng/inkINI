@@ -10,6 +10,7 @@ static void read_comment(inkINI_file* file, char* line)
     size_t i = 0;
     struct entry* entry = &file->entries[file->num_entries];
     strcpy(entry->value, line);
+    entry->key[0] = '\0';
     // remove ending '\n'
     entry->value[strlen(entry->value) - 1] = '\0';
 }
@@ -104,13 +105,11 @@ inkINI_file inkINI_load_file(const char* filename)
     char line[INKINI_MAX_LINE_LENGTH + 1];
     while (fgets(line, INKINI_MAX_LINE_LENGTH + 1, file) != NULL) {
         if (line[0] == INKINI_COMMENT) {
-            printf("%s", line);
             read_comment(&ini_file, line);
             ++ini_file.num_entries;
         } else if (strlen(line) == 1) {
             continue;
         } else {
-            printf("%s", line);
             read_entry(&ini_file, line);
             ++ini_file.num_entries;
         }
