@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     inkINI_print_all(file);
 
-    inkINI_close_file(file);
+    inkINI_close_file(file, INI_FILES "b.ini");
 
     return 0;
 }
