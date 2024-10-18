@@ -10,7 +10,9 @@ add_library(inkINI
 target_include_directories(inkINI PUBLIC include)
 target_compile_features(inkINI PUBLIC c_std_99)
 
-add_executable(test test/test.c)
-target_link_libraries(test PRIVATE inkINI)
-target_compile_features(test PUBLIC c_std_99)
-target_compile_definitions(test PRIVATE INI_FILES="${CMAKE_SOURCE_DIR}/test/ini-files/")
+if (${INKINI_BUILD_TEST})
+    add_executable(test test/test.c)
+    target_link_libraries(test PRIVATE inkINI)
+    target_compile_features(test PUBLIC c_std_99)
+    target_compile_definitions(test PRIVATE INI_FILES="${CMAKE_SOURCE_DIR}/test/ini-files/")
+endif()
