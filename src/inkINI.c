@@ -8,7 +8,7 @@
 static void read_comment(inkINI_file* file, char* line)
 {
     size_t i = 0;
-    struct entry* entry = &file->entries[file->num_entries];
+    struct inkINI_entry* entry = &file->entries[file->num_entries];
     strcpy(entry->value, line);
     entry->key[0] = '\0';
     // remove ending '\n'
@@ -17,7 +17,7 @@ static void read_comment(inkINI_file* file, char* line)
 
 static void read_entry(inkINI_file* file, char* line)
 {
-    struct entry* entry = &file->entries[file->num_entries];
+    struct inkINI_entry* entry = &file->entries[file->num_entries];
     size_t equal_sign_index = 0;
     while (line[equal_sign_index] != '=') {
         ++equal_sign_index;
@@ -64,9 +64,9 @@ static void get_value(inkINI_file file, const char* key, char** value)
     *value = file.entries[i].value;
 }
 
-static struct entry* get_entry(inkINI_file file, const char* key)
+static struct inkINI_entry* get_entry(inkINI_file file, const char* key)
 {
-    struct entry* entry = NULL;
+    struct inkINI_entry* entry = NULL;
     // check if value exists
     for (size_t i = 0; i < INKINI_MAX_ENTRIES; ++i) {
         if (strcmp(file.entries[i].key, key) == 0) {
@@ -98,7 +98,8 @@ inkINI_file inkINI_load_file(const char* filename)
     }
     freopen(filename, "r", file);
     inkINI_file ini_file;
-    ini_file.entries = malloc(sizeof(struct entry) * INKINI_MAX_ENTRIES);
+    ini_file.entries = malloc(
+        sizeof(struct inkINI_entry) * INKINI_MAX_ENTRIES);
     ini_file.num_entries = 0;
 
     // read al the values in the file
@@ -126,7 +127,7 @@ void inkINI_close_file(inkINI_file file, const char* filename)
     // write new data to file
     FILE* f = fopen(filename, "w");
     for (size_t i = 0; i < file.num_entries; ++i) {
-        struct entry* entry = &file.entries[i];
+        struct inkINI_entry* entry = &file.entries[i];
 
         if (entry->key[0] == '\0') {
             fprintf(f, "%s\n", entry->value);
@@ -163,19 +164,19 @@ const char* inkINI_read_s(inkINI_file file, const char* key)
 
 void inkINI_write_i(inkINI_file file, const char* key, int value)
 {
-    struct entry* entry = get_entry(file, key);
+    struct inkINI_entry* entry = get_entry(file, key);
     sprintf(entry->value, "%i", value);
 }
 
 void inkINI_write_d(inkINI_file file, const char* key, double value)
 {
-    struct entry* entry = get_entry(file, key);
+    struct inkINI_entry* entry = get_entry(file, key);
     sprintf(entry->value, "%f", value);
 }
 
 void inkINI_write_s(inkINI_file file, const char* key, const char* value)
 {
-    struct entry* entry = get_entry(file, key);
+    struct inkINI_entry* entry = get_entry(file, key);
     strcpy(entry->value, value);
 }
 
