@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.22)
 
 project(inkINI C)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/test)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(inkINI
